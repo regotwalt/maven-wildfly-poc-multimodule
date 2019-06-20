@@ -18,6 +18,53 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Plugins/Dependencies Versions -->
+        <wildfly.version>2.0.1.Final</wildfly.version>
+        <servlet.version>3.1.0</servlet.version>
+
+        <!-- Developer Properties -->
+        <!-- TODO: Consider moving this into Maven's settings.xml or a separate properties file -->
+        <wildfly.local.path>/Users/rachel/TechmodBerwick/wildfly-17.0.0.Final</wildfly.local.path>
     </properties>
+
+    <build>
+        <plugins>
+            <!-- Plugin for the WildFly Application Server -->
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>${wildfly.version}</version>
+                <configuration>
+                    <jboss-home>${wildfly.path}</jboss-home>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- Dependency for Java Servlet (Provided by Application Server) -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Profiles for the Different Environments -->
+    <profiles>
+        <!-- Local Environment for Development -->
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <wildfly.path>${wildfly.local.path}</wildfly.path>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
